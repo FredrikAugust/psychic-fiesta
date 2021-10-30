@@ -1,9 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import App from './App';
 import { Reset } from 'styled-reset';
 import { DefaultTheme, ThemeProvider } from 'styled-components';
+import { Router, Route } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
+import Whiteboard from './Whiteboard';
+import Mobile from './Mobile';
+
+import './styles.css';
 
 const theme: DefaultTheme = {
     padding: {
@@ -19,7 +24,10 @@ ReactDOM.render(
         <ThemeProvider theme={theme}>
             <>
                 <Reset />
-                <App />
+                <Router history={createBrowserHistory()}>
+                    <Route path="/" exact component={Whiteboard} />
+                    <Route path="/mobile" component={Mobile} />
+                </Router>
             </>
         </ThemeProvider>
     </React.StrictMode>,

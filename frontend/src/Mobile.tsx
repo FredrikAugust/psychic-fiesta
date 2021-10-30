@@ -1,8 +1,9 @@
 import React from 'react';
 
-import Container from './components/organisms/Container';
+import Container from './Container';
 
 import socketIOClient, { Socket } from 'socket.io-client';
+import Positioning from './Positioning';
 
 const SOCKET_IO_ENDPOINT = `http://localhost:4000`;
 
@@ -17,12 +18,22 @@ const App: React.FC = () => {
             console.log('connected');
         });
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        _socket.on('message', (message: Record<string, any>) => {
+            console.debug(message);
+        });
+
         return () => {
             _socket.removeAllListeners();
         };
     }, []);
 
     const [input, setInput] = React.useState('');
+    const [isPositioning, setIsPositioning] = React.useState(false);
+
+    if (isPositioning) {
+        return <Positioning socket={socket} />;
+    }
 
     return (
         <Container>
@@ -32,8 +43,8 @@ const App: React.FC = () => {
                 action="#"
                 onSubmit={(e) => {
                     e.preventDefault();
-                    socket?.send({ value: input });
                     setInput('');
+                    setIsPositioning(true);
                 }}
             >
                 <input type="text" value={input} onChange={(e) => setInput(e.currentTarget.value)} />

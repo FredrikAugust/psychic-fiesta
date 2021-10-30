@@ -14,11 +14,27 @@ const io = require("socket.io")(server, {
 });
 
 io.on("connection", (socket) => {
-  console.log("a user connected");
+  console.log("New client connected");
 
   socket.on("message", (data) => {
-    console.log(data);
-    io.emit("message", { ...data, id: v4().toString() });
+    switch (data.type) {
+      case "create":
+        const id = v4();
+        io.emit("message", { type: "created", value: { id, ...data } });
+        break;
+
+      case "sync":
+        io.emit("message", { type: "sync" });
+        break;
+
+      case "sync_response":
+        io.emit("sync_response", { value: data.value });
+        break;
+
+      default:
+        console.warn(`Unknown type: ${data.type}`);
+        break;
+    }
   });
 });
 
