@@ -14,28 +14,31 @@ const io = require("socket.io")(server, {
 });
 
 io.on("connection", (socket) => {
-  console.log("New client connected");
+  socket
+    .on("message", (data) => {
+      switch (data.type) {
+        case "create":
+          const id = v4();
+          io.emit("message", { type: "created", value: { id, ...data } });
+          break;
 
-  socket.on("message", (data) => {
-    switch (data.type) {
-      case "create":
-        const id = v4();
-        io.emit("message", { type: "created", value: { id, ...data } });
-        break;
+        case "sync":
+          io.emit("sync");
+          break;
 
-      case "sync":
-        io.emit("message", { type: "sync" });
-        break;
+        case "sync_response":
+          console.debug(data.value);
+          io.emit("sync_response", { value: data.value });
+          break;
 
-      case "sync_response":
-        io.emit("sync_response", { value: data.value });
-        break;
-
-      default:
-        console.warn(`Unknown type: ${data.type}`);
-        break;
-    }
-  });
+        default:
+          console.warn(`Unknown type: ${data.type}`);
+          break;
+      }
+    })
+    .on("disconnect", () => {
+      console.log("disconnected");
+    });
 });
 
 server.listen(4000, () => {

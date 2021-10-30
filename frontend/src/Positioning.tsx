@@ -30,6 +30,8 @@ const Crosshair = styled.div`
 
     bottom: 50%;
 
+    z-index: 999;
+
     width: 100vw;
     display: flex;
     justify-content: center;
@@ -37,6 +39,9 @@ const Crosshair = styled.div`
 
 type PositioningProps = {
     socket?: Socket;
+    setIsPositioning: (isPositioning: boolean) => void;
+    input: string;
+    setInput: (input: string) => void;
 };
 
 const Positioning: React.FC<PositioningProps> = (props) => {
@@ -66,6 +71,7 @@ const Positioning: React.FC<PositioningProps> = (props) => {
     const restoreFromString = (raw: string) => {
         try {
             const flow = JSON.parse(raw) as FlowExportObject;
+            console.debug(flow);
 
             const [x = 0, y = 0] = flow.position;
             setElements(flow.elements);
@@ -107,12 +113,22 @@ const Positioning: React.FC<PositioningProps> = (props) => {
                 onClick={() => {
                     props.socket?.send({
                         type: 'create',
-                        value: 'test',
+                        value: props.input,
                         position: getCoordinates(),
                     });
+                    props.setIsPositioning(false);
+                    props.setInput('');
                 }}
             >
                 Post it!
+            </button>
+            <button
+                onClick={() => {
+                    props.setIsPositioning(false);
+                    props.setInput('');
+                }}
+            >
+                cancel
             </button>
         </Container>
     );
