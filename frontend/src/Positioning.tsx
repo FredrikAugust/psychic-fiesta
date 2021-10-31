@@ -168,9 +168,20 @@ const Positioning: React.FC<PositioningProps> = (props) => {
             <Container>
                 <Center>
                     <PostItInput
-                        style={{ opacity: animate ? '1' : '0', transition: 'opacity 0.2s ease-in-out' }}
+                        style={{
+                            fontSize: '24px',
+
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            wordWrap: 'break-word',
+                            lineHeight: 'unset',
+
+                            padding: '25px',
+                            opacity: animate ? '1' : '0',
+                            transition: 'opacity 0.2s ease-in-out',
+                        }}
                         ref={postitref}
-                        value="test"
+                        value={props.input}
                         readOnly
                         submitting={false}
                         color={props.color}

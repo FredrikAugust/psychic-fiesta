@@ -165,7 +165,7 @@ const App: React.FC = () => {
                     setSubmitting(true);
                 }}
             >
-                <div style={{ marginTop: 'auto' }}>
+                <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
                     <PostItInput
                         submitting={submitting}
                         color={color}
