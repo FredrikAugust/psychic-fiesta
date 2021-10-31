@@ -176,6 +176,8 @@ const Positioning: React.FC<PositioningProps> = (props) => {
                             wordWrap: 'break-word',
                             lineHeight: 'unset',
 
+                            zIndex: 999999,
+                            boxShadow: '0 2px 4px rgba(0,0,0,0.16), 0px 1px rgba(0,0,0,0.18)',
                             padding: '25px',
                             opacity: animate ? '1' : '0',
                             transition: 'opacity 0.2s ease-in-out',
@@ -191,6 +193,7 @@ const Positioning: React.FC<PositioningProps> = (props) => {
                     <ReactFlow
                         zoomOnPinch={false}
                         zoomOnScroll={false}
+                        nodesDraggable={false}
                         nodeTypes={customNodeMap}
                         draggable={false}
                         onLoad={setInstance}
