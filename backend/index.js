@@ -19,6 +19,7 @@ io.on("connection", (socket) => {
       switch (data.type) {
         case "create":
           const id = v4();
+          console.debug(data);
           io.emit("message", { type: "created", value: { id, ...data } });
           break;
 

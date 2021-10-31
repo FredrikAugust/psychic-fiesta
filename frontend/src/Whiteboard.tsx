@@ -23,40 +23,39 @@ type Message = {
     type: string;
 };
 
-const Postit = styled.div`
-    font-family: 'Helvetica', sans-serif;
-    font-weight: semibold;
+const Postit = styled.div<{ color: string }>`
+    --webkit-appearance: none;
 
-    padding: 1em;
-    background: rgb(255, 215, 7);
-    position: relative;
-    aspect-ratio: 1.3/1;
-    height: 80px;
+    resize: none;
 
-    :after {
-        content: '';
-        position: absolute;
-        bottom: -25px;
-        left: 0;
-        right: 25px;
-        border-width: 15px;
-        border-style: solid;
-        border-color: rgb(255, 215, 7);
-    }
+    border-radius: 13px;
+    aspect-ratio: 1/1;
 
-    :before {
-        content: '';
-        position: absolute;
-        bottom: -25px;
-        right: 0;
-        border-width: 25px 25px 0 0;
-        border-style: solid;
-        border-color: rgb(230, 190, 2) transparent; /*darken(rgb(255, 215, 7), 10%) transparent;*/
-    }
+    width: 200px;
+
+    color: #545454;
+
+    font-family: 'Cisco Sans', sans-serif;
+
+    font-size: 24px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+
+    padding: 25px;
+
+    border: unset;
+
+    background-color: ${(props) => props.color};
 `;
 
 export const customNodeMap: Record<string, React.FC<NodeComponentProps>> = {
-    postit: (props) => <Postit>{props.data?.label}</Postit>,
+    postit: (props) => (
+        <Postit color={props.data.color}>
+            <span>{props.data?.label}</span>
+        </Postit>
+    ),
 };
 
 const App: React.FC = () => {
@@ -83,16 +82,18 @@ const App: React.FC = () => {
             });
 
         _socket.on('message', (message: Message) => {
-            if (message.type === 'created')
+            if (message.type === 'created') {
+                console.debug(message.value.value.value);
                 setNodes((msgs) => [
                     {
                         type: 'postit',
-                        data: { label: message.value.value },
+                        data: { label: message.value.value.value, color: message.value.value.color },
                         id: message.value.id,
-                        position: message.value.position,
+                        position: message.value.value.position,
                     },
                     ...msgs,
                 ]);
+            }
         });
 
         return () => {
@@ -129,6 +130,7 @@ const App: React.FC = () => {
 
         return () => {
             socket?.removeListener('sync');
+            socket?.removeListener('sync_response');
         };
     }, [nodes, socket]);
 

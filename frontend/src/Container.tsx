@@ -1,8 +1,26 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+export const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
 
+  to {
+    opacity: 1;
+  }
+`;
+
+export const fadeOut = keyframes`
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+`;
 export default styled.main`
-    padding-top: ${(props) => props.theme.padding.md};
-    padding-bottom: ${(props) => props.theme.padding.sm};
-    padding-left: ${(props) => props.theme.padding.sm};
-    padding-right: ${(props) => props.theme.padding.sm};
+    padding: ${(props) => props.theme.padding.md};
+    padding-top: ${(props) => props.theme.padding.lg};
+    padding-bottom: ${(props) => props.theme.padding.lg};
+    height: 100%;
 `;

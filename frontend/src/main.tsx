@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { Reset } from 'styled-reset';
 import { DefaultTheme, ThemeProvider } from 'styled-components';
 import { Router, Route } from 'react-router-dom';
-import { createBrowserHistory } from 'history';
+import { createHashHistory } from 'history';
 import Whiteboard from './Whiteboard';
 import Mobile from './Mobile';
 
@@ -24,7 +24,7 @@ ReactDOM.render(
         <ThemeProvider theme={theme}>
             <>
                 <Reset />
-                <Router history={createBrowserHistory()}>
+                <Router history={createHashHistory()}>
                     <Route path="/" exact component={Whiteboard} />
                     <Route path="/mobile" component={Mobile} />
                 </Router>
