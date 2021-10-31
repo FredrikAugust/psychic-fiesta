@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import { Reset } from 'styled-reset';
 import { DefaultTheme, ThemeProvider } from 'styled-components';
-import { Router, Route } from 'react-router-dom';
+import { Router, Route, HashRouter } from 'react-router-dom';
 import { createHashHistory } from 'history';
 import Whiteboard from './Whiteboard';
 import Mobile from './Mobile';
@@ -24,10 +24,10 @@ ReactDOM.render(
         <ThemeProvider theme={theme}>
             <>
                 <Reset />
-                <Router history={createHashHistory()}>
+                <HashRouter>
                     <Route path="/" exact component={Whiteboard} />
                     <Route path="/mobile" component={Mobile} />
-                </Router>
+                </HashRouter>
             </>
         </ThemeProvider>
     </React.StrictMode>,
